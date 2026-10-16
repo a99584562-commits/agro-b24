@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* scale the whole deck up on large screens so it doesn't look tiny on a TV/projector */
+html {
+  font-size: 16px;
+}
+@media (min-width: 1500px) {
+  html {
+    font-size: 17.5px;
+  }
+}
+@media (min-width: 1800px) {
+  html {
+    font-size: 19px;
+  }
+}
+@media (min-width: 2200px) {
+  html {
+    font-size: 21px;
+  }
+}
+
+body {
+  margin: 0;
+  background: #eef3e6;
+  color: #15291c;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+/* ── liquid-glass surfaces (Аврора · стекло) ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 26px 60px -34px rgba(28, 58, 38, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.glass-soft {
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.text-aurora {
+  background: linear-gradient(95deg, #2f8f4e 0%, #6fa85c 48%, #c2922e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* film-grain overlay for editorial paper feel */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: #2f8f4e;
+  color: #ffffff;
+}
+
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(36, 27, 18, 0.18);
+  border-radius: 999px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── range slider thumb ── */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  background: #fbf8f2;
+  border: 2px solid #2f8f4e;
+  box-shadow: 0 2px 8px rgba(36, 27, 18, 0.28);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.18);
+}
+input[type="range"]::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 9999px;
+  background: #fbf8f2;
+  border: 2px solid #2f8f4e;
+  box-shadow: 0 2px 8px rgba(36, 27, 18, 0.28);
+  cursor: pointer;
+}
+
+/* ── motion library ── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(46px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-46px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes driftA {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(26px, -30px, 0) scale(1.06); }
+}
+@keyframes driftB {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-30px, 22px, 0) scale(1.08); }
+}
+@keyframes growX {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+@keyframes shimmer {
+  100% { background-position: 200% 0; }
+}
+
+.drift-a { animation: driftA 14s ease-in-out infinite; will-change: transform; }
+.drift-b { animation: driftB 18s ease-in-out infinite; will-change: transform; }
+.grow-x { transform-origin: left center; animation: growX 0.85s cubic-bezier(0.32, 0.72, 0, 1) both; }
+.pulse-dot { animation: pulseDot 1.8s ease-in-out infinite; }
+
+/* shimmering "live" badge sweep */
+.shimmer {
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── agro deck additions ── */
+@keyframes dashFlow {
+  to { stroke-dashoffset: -20; }
+}
+.flow-line {
+  stroke-dasharray: 3 7;
+  animation: dashFlow 1.4s linear infinite;
+}
+@keyframes floaty {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+.floaty { animation: floaty 7s ease-in-out infinite; will-change: transform; }
+@keyframes rideX {
+  0% { left: 0%; }
+  100% { left: 100%; }
+}
+.ride-x { animation: rideX 9s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate; }
+@keyframes ringPulse {
+  0% { transform: scale(0.85); opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.ring-pulse { animation: ringPulse 2.6s ease-out infinite; }
